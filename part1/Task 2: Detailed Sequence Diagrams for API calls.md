@@ -1,11 +1,9 @@
-## Explanatory Notes
-
 ### 🖥️ **Sequence Diagrams for API calls**
-
+---
 - **Purpose**: 
   - The following 4 sequence diagrams illustrate how different components of the Hbnb application interact when handling user requests. Each diagram shows the **flow of information** across the `Presentation Layer` (API/controllers), `Business Logic Layer` (facades/services), and `Persistence Layer` (repositories/database).
   - The goal is to make the **request/response** lifecycle transparent, showing both the **happy path** (successful case) and **important error** branches (e.g., validation errors, not found, conflicts).
-
+---
 - **Included API Calls**
   - 1️⃣ **User Registration** (`POST /users`)
 	- *What it does*: Allows a new user to sign up with `email`, `password`, and `personal details`.
@@ -23,14 +21,14 @@
 	- *What it does*: Returns a paginated list of places, optionally filtered by price or amenities.
 	- *Flow*: User sends query → API parses filters → BL forwards query to Repository → Repository builds SQL with joins → DB returns results → BL maps to PlaceSummaryDto → Response returns list.
 	- *Error Cases*: No results (200 with empty list), invalid filters (400).
-
+---
 - **Key Roles of Sequence Diagrams**
   - **Presentation Layer**: Handles request/response, validates inputs, maps errors to HTTP codes.
   - **Business Logic Layer**: Implements rules, orchestrates transactions, and ensures data integrity.
   - **Persistence Layer**: Encapsulates DB access, executes queries, and returns entities to BL.
-
+---
 - **Why These 4 APIs?**
-These APIs represent the core functionality of an Airbnb-like system:
+- **These APIs represent the core functionality of an Airbnb-like system:**
   - **Register users** → build the user base
   - **Create places** → supply side of rentals
   - **Add reviews** → social proof and quality control
