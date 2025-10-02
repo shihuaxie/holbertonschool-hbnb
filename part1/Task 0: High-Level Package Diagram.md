@@ -34,10 +34,21 @@ The **Facade Pattern** streamlines the communication between layers.
 
 ### 🗂️ **Persistence Layer (Database)**
 
-- **Purpose**:
+- **Purpose**: Store and manage application data reliably, ensuring persistence across sessions.
 - **Key Roles**:
+  - Encapsulate all database interactions
+  - Provide CRUD (`Create`, `Read`, `Update`, `Delete`) operations for entities (`User`, `Place`, `Review`, `Amenity`)
+  - Enforce integrity rules (constraints, foreign keys, cascades)
+  - Shield upper layers from SQL or database-specific implementation details
 - **Components**:
-- **Facade Role**:
+  - **UserRepository**: handles queries for user accounts (create, getById, getByEmail)
+  - **PlaceRepository**: manages rental properties (create, list with filters, attach amenities)
+  - **ReviewRepository**: handles feedback retrieval and persistence
+  - **Database (PostgreSQL)**: relational data storage, primary/foreign keys, constraints
+- **Facade Role Architecture**:
+  - Acts as the **data access layer** that the Business Logic Layer depends on
+  - Provides a **clean contract** for data access so that any database changes (e.g., moving from PostgreSQL to another DB) do not affect external layers
+  - Supports **transaction management** for complex operations (e.g., create Place + attach Amenities)
 
 ---
 
