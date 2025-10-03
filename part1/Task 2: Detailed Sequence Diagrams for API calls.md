@@ -30,9 +30,32 @@
 - **Why These 4 APIs?**
 - **These APIs represent the core functionality of an Airbnb-like system:**
   - **Register users** → build the user base
+<img width="1941" height="1246" alt="mermaid-diagram-2025-10-03-160757" src="https://github.com/user-attachments/assets/137ceee5-b1fb-436f-9ba9-ac9ec3143a37" />
+Purpose:
+To register a new user in the system by collecting their credentials and storing them securely in the database.
+
+Flow of Interactions:
+1. *User* initiates a registration request via the frontend or API client.
+2. *API Layer* receives the POST/users request and forwards it to the business logic.
+3. *Business Logic Layer* validates the input and prepares the user data.
+4. *Database Layer* stors the new user record.
+5. A confirmation or error message is returned back through the layers to the user.
+
+
   - **Create places** → supply side of rentals
+<img width="1941" height="1246" alt="mermaid-diagram-2025-10-03-160834" src="https://github.com/user-attachments/assets/655eddeb-2816-4bd9-94d7-3ac83ef542ea" />
+Purpose:
+To allow a registered user to create a new place listing with details like name, location and description.
+
+Flow of Interactions:
+1. *User* sends a POST/places request with place details.
+2. *API Layer* receives the request and passes it to the business logic.
+3. *Business Logic Layer* validates the place data.
+4. *Database Layer* inserts the new place record.
+5. A confirmation or error message is returned back through the layers to the user.
+   
   - **Add reviews** → social proof and quality control
   - **Fetch places** → demand side for users searching listings
     
-<img width="1941" height="1246" alt="mermaid-diagram-2025-10-03-160757" src="https://github.com/user-attachments/assets/137ceee5-b1fb-436f-9ba9-ac9ec3143a37" />
-<img width="1941" height="1246" alt="mermaid-diagram-2025-10-03-160834" src="https://github.com/user-attachments/assets/655eddeb-2816-4bd9-94d7-3ac83ef542ea" />
+
+
