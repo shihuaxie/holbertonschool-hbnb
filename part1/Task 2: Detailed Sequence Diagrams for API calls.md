@@ -33,3 +33,6 @@
   - **Create places** → supply side of rentals
   - **Add reviews** → social proof and quality control
   - **Fetch places** → demand side for users searching listings
+    
+<img width="1941" height="1246" alt="mermaid-diagram-2025-10-03-160757" src="https://github.com/user-attachments/assets/137ceee5-b1fb-436f-9ba9-ac9ec3143a37" />
+<img width="1941" height="1246" alt="mermaid-diagram-2025-10-03-160834" src="https://github.com/user-attachments/assets/655eddeb-2816-4bd9-94d7-3ac83ef542ea" />
