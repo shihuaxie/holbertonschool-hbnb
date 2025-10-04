@@ -29,7 +29,7 @@ This detailed class diagram for the Business Logic layer illustrates the entitie
     - `get_reviews()`: fetch reviews associated with this place
     - `get_average_rating()`: calculate the average rating from reviews
 
-### **Amenity**
+### **3.Amenity**
 - Represents additional features of a `Place` (e.g. wi-fi, saunas)
 - **Attributes:**
     - `name`, `description`
@@ -39,7 +39,7 @@ This detailed class diagram for the Business Logic layer illustrates the entitie
     - `create(data: dict)`, `update(data: dict)`, `delete()`
     - `list()`: retrieve all amenities
  
-### **Review**
+### **4.Review**
 - Represents guest feedback on `Place`s
 - **Attributes:**
     - `rating`, `comment`
