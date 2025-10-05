@@ -7,10 +7,21 @@ The **Facade Pattern** streamlines the communication between layers.
 
 ### 🖥️ **Presentation Layer (Services, API)**
 
-- **Purpose**:
+- **Purpose**: primary interface between the HBnB application and its users. 
 - **Key Roles**:
+  - User Interaction Management.
+  - Provides APIs so users can search for places, add reviews or manage bookings.
+  - Sending data back in a clear format (like JSON).
+  - Error management with clear error messages when issues arise.
 - **Components**:
+  - **Service Handlers**: responsible for implementing the logic that responds to API calls (UserSerive, PlaceService, ReviewService, AmenityService).
+  - **Controllers/API Endpoints**: defines the routes and HTTP methods (GET, POST, PUT, DELETE) for interacting with the application.
+  - **Data Transfer Objects**: structure and validate the data exchanged between the clients and the applictaion.
 - **Facade Role**:
+  - **Unifies Access**: offers a single point of entry for business operations, reducing coupling between layers.
+  - **Reduces Complexity**: presentation layer doesn't need to manage multiple models (clean and easy to manage).
+  - **Improves Maintainability**: changes within the Business Logic Layer do not affect the external API structure.
+  - **Enhances Consistency**: ensures that business rules and validations are applied.
 
 ---
 
