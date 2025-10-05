@@ -29,7 +29,7 @@
 ---
 - **Why These 4 APIs?**
 - **These APIs represent the core functionality of an Airbnb-like system:**
-  - **Register users** → build the user base
+  - 1️⃣  **Register users** → build the user base
 <img width="1941" height="1246" alt="mermaid-diagram-2025-10-03-160757" src="https://github.com/user-attachments/assets/137ceee5-b1fb-436f-9ba9-ac9ec3143a37" />
 Purpose:
 To register a new user in the system by collecting their credentials and storing them securely in the database.
@@ -40,9 +40,9 @@ Flow of Interactions:
 3. *Business Logic Layer* validates the input and prepares the user data.
 4. *Database Layer* stors the new user record.
 5. A confirmation or error message is returned back through the layers to the user.
+---
 
-
-  - **Create places** → supply side of rentals
+  - 2️⃣  **Create places** → supply side of rentals
 <img width="1941" height="1246" alt="mermaid-diagram-2025-10-03-160834" src="https://github.com/user-attachments/assets/655eddeb-2816-4bd9-94d7-3ac83ef542ea" />
 Purpose:
 To allow a registered user to create a new place listing with details like name, location and description.
@@ -53,9 +53,89 @@ Flow of Interactions:
 3. *Business Logic Layer* validates the place data.
 4. *Database Layer* inserts the new place record.
 5. A confirmation or error message is returned back through the layers to the user.
-   
-  - **Add reviews** → social proof and quality control
-  - **Fetch places** → demand side for users searching listings
-    
+---  
+  - 3️⃣  **Add reviews** → social proof and quality control
+```mermaid
+sequenceDiagram
+autonumber
+	participant U as User
+	participant API as ReviewAPI (PresentationLayer)
+	participant F as ReviewFacade (BusinessLayer)
+	participant PR as PlaceRepository (PersistenceLayer)
+	participant RR as ReviewRepository (PersistenceLayer)
+	participant DB as PostgreSQL
+	
+	U->>API: POST /places/{placeId}/reviews {rating, comment}
+	API->>F: addReview(userId, placeId, dto)
+	F->>PR: getPlaceById(placeId)
+	PR->>DB: Query place by id
+	DB-->>PR: Place found or none
+	
+	alt Place exists
+	  F->>RR: createReview(userId, placeId, dto)
+	  RR->>DB: Insert review
+	  DB-->>RR: review_id
+	  RR-->>F: ReviewEntity
+	  F-->>API: ReviewDto
+	  API-->>U: 201 Created + payload
+	else Place not found
+	  F-->>API: NotFound error
+	  API-->>U: 404 Not Found
+	end
+	
+	alt Invalid rating
+	  API-->>U: 400 Bad Request
+	end
+```
+**Purpose**: To allow a user to leave a review for a place, including rating and comment.
 
+**Flow of interation**:
+1.	`User` submits a review with rating and comment.
+2.	`ReviewAPI` validates input and forwards request to `Business Logic`.
+3.	`Business Logic` checks that the place exists.
+4.	If found, `ReviewRepository` inserts the review into the `database`.
+5.	A new ReviewDto is returned to the user with `201 Created`.
 
+**Error Cases**:
+1. `404` Not Found: Place does not exist.
+2. `400` Bad Request: Rating is outside allowed range (1–5) or payload invalid.
+---
+- 4️⃣  **Fetching places** → demand side for users searching listings
+```mermaid
+sequenceDiagram
+autonumber
+	participant U as User
+	participant API as PlaceAPI (PresentationLayer)
+	participant F as PlaceFacade (BusinessLayer)
+	participant R as PlaceRepository (PersistenceLayer)
+	participant DB as PostgreSQL
+	
+	U->>API: GET /places?price_min&price_max&amenity&page&size
+	API->>F: listPlaces(filters, pagination)
+	F->>R: list(filters, pagination)
+	R->>DB: Query places with filters & pagination
+	DB-->>R: Place rows
+	R-->>F: PlaceEntity[]
+	F-->>API: PlaceDto[]
+	API-->>U: 200 OK + place list
+	
+	alt No results
+	  API-->>U: 200 OK []
+	end
+	
+	alt Invalid filters
+	  API-->>U: 400 Bad Request
+	end
+```
+**Purpose**: Returns a paginated list of `places`, optionally `filtered` by price or amenities.
+
+**Flow of interation**:
+1.	`User` requests places with filters (price range, amenity, pagination).
+2.	`PlaceAPI` parses query params and calls `Business Logic`.
+3.	`Business Logic` forwards filters to the `PlaceRepository`.
+4.	`PlaceRepository` queries the `DB` and returns matching places.
+5.	Results are mapped to PlaceDto[] and returned with `200 OK`.
+
+**Error Cases**:
+1. 200 OK []: Valid query but `no results` match.
+2. `400` Bad Request: Invalid filters (e.g. negative price, bad amenity value).
