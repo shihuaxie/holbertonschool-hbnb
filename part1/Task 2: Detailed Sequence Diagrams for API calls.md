@@ -60,7 +60,7 @@ sequenceDiagram
 
     Note left of API: Return Response
     API-->>User: Registration Confirmation
-    deactivate
+    deactivate API
 ```
 Purpose:
 To register a new user in the system by collecting their credentials and storing them securely in the database.
