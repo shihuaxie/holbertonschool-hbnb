@@ -30,7 +30,38 @@
 - **Why These 4 APIs?**
 - **These APIs represent the core functionality of an Airbnb-like system:**
   - 1️⃣  **Register users** → build the user base
-<img width="1941" height="1246" alt="mermaid-diagram-2025-10-03-160757" src="https://github.com/user-attachments/assets/137ceee5-b1fb-436f-9ba9-ac9ec3143a37" />
+```mermaid
+sequenceDiagram
+    participant User
+    participant API
+    participant BusinessLogic
+    participant Database
+
+    Note over User: Registering Users Process
+
+    User->>API: POST /users (Register User)
+    activate API
+    Note right of API: Validate & Create User
+
+    API->>BusinessLogic: Validate & Create User
+    activate BusinessLogic
+    Note right of BusinessLogic: Insert Record
+
+    BusinessLogic->>Database: Insert Record
+    activate Database
+    Note right of Database: Success/Failure
+
+    Database-->>BusinessLogic: Success/Failure
+    deactivate Database
+
+    Note left of BusinessLogic: Return Response
+    BusinessLogic-->>API: Response
+    deactivate BusinessLogic
+
+    Note left of API: Return Response
+    API-->>User: Registration Confirmation
+    deactivate
+```
 Purpose:
 To register a new user in the system by collecting their credentials and storing them securely in the database.
 
@@ -43,7 +74,38 @@ Flow of Interactions:
 ---
 
   - 2️⃣  **Create places** → supply side of rentals
-<img width="1941" height="1246" alt="mermaid-diagram-2025-10-03-160834" src="https://github.com/user-attachments/assets/655eddeb-2816-4bd9-94d7-3ac83ef542ea" />
+```mermaid
+sequenceDiagram
+    participant User
+    participant API
+    participant BusinessLogic
+    participant Database
+
+    Note over User: Creating a New Place
+
+    User->>API: POST /places (Create Place)
+    activate API
+    Note right of API: Validate & Forward Request
+
+    API->>BusinessLogic: Validate & Create Place
+    activate BusinessLogic
+    Note right of BusinessLogic: Prepare Place Data
+
+    BusinessLogic->>Database: Insert Place Record
+    activate Database
+    Note right of Database: Store Place Info
+
+    Database-->>BusinessLogic: Success/Failure
+    deactivate Database
+
+    Note left of BusinessLogic: Return Status
+    BusinessLogic-->>API: Place Created Response
+    deactivate BusinessLogic
+
+    Note left of API: Send Confirmation
+    API-->>User: Place Creation Confirmation
+    deactivate API
+```
 Purpose:
 To allow a registered user to create a new place listing with details like name, location and description.
 
