@@ -14,9 +14,11 @@ The **Facade Pattern** streamlines the communication between layers.
   - Sending data back in a clear format (like JSON).
   - Error management with clear error messages when issues arise.
 - **Components**:
-  - **Service Handlers**: responsible for implementing the logic that responds to API calls (UserSerive, PlaceService, ReviewService, AmenityService).
-  - **Controllers/API Endpoints**: defines the routes and HTTP methods (GET, POST, PUT, DELETE) for interacting with the application.
-  - **Data Transfer Objects**: structure and validate the data exchanged between the clients and the applictaion.
+  - **UserController**: handles user-related actions such as registerUser.
+  - **PageController**: manages requests for page content via getPageDetails.
+  - **ReviewControllr**: processes review submissions through submitReviews.
+  - **AmenityController**: provides access to amenity listings via listAmenities.
+  - **API PaymentServices**: manages payment-related operations and integrations.
 - **Facade Role**:
   - **Unifies Access**: offers a single point of entry for business operations, reducing coupling between layers.
   - **Reduces Complexity**: presentation layer doesn't need to manage multiple models (clean and easy to manage).
