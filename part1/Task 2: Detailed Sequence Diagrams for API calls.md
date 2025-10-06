@@ -32,35 +32,34 @@
   - 1️⃣  **Register users** → build the user base
 ```mermaid
 sequenceDiagram
-    participant User
-    participant API
-    participant BusinessLogic
-    participant Database
+autonumber
+participant U as User
+participant API as PlaceAPI (PresentationLayer)
+participant F as PlaceFacade (BusinessLogicLayer)
+participant R as PlaceRepository (PersistenceLayer)
+participant DB as PostgreSQL
 
-    Note over User: Registering Users Process
+U->>API: POST /users {email, password, first_name, last_name}
+API->>F: registerUser(dto)
+F->>R: getByEmail(email)
+R->>DB: Query user by email
+DB-->>R: user found or none
 
-    User->>API: POST /users (Register User)
-    activate API
-    Note right of API: Validate & Create User
+alt Email not used
+  F->>R: create(userEntity)
+  R->>DB: Insert user
+  DB-->>R: user_id
+  R-->>F: UserEntity
+  F-->>API: UserDto
+  API-->>U: 201 Created + payload
+else Email already exists
+  F-->>API: Conflict error
+  API-->>U: 409 Conflict
+end
 
-    API->>BusinessLogic: Validate & Create User
-    activate BusinessLogic
-    Note right of BusinessLogic: Insert Record
-
-    BusinessLogic->>Database: Insert Record
-    activate Database
-    Note right of Database: Success/Failure
-
-    Database-->>BusinessLogic: Success/Failure
-    deactivate Database
-
-    Note left of BusinessLogic: Return Response
-    BusinessLogic-->>API: Response
-    deactivate BusinessLogic
-
-    Note left of API: Return Response
-    API-->>User: Registration Confirmation
-    deactivate API
+alt Invalid payload
+  API-->>U: 400 Bad Request
+end
 ```
 Purpose:
 To register a new user in the system by collecting their credentials and storing them securely in the database.
@@ -76,35 +75,32 @@ Flow of Interactions:
   - 2️⃣  **Create places** → supply side of rentals
 ```mermaid
 sequenceDiagram
-    participant User
-    participant API
-    participant BusinessLogic
-    participant Database
+autonumber
+participant U as User
+participant API as PlaceAPI (PresentationLayer)
+participant F as PlaceFacade (BusinessLogicLayer)
+participant R as PlaceRepository (PersistenceLayer)
+participant DB as PostgreSQL
 
-    Note over User: Creating a New Place
+U->>API: POST /places {title, price_cents, latitude, longitude, amenity_ids}
+API->>F: createPlace(ownerId, dto)
+F->>R: createPlace(ownerId, dto)
+R->>DB: Insert place
+DB-->>R: place_id
+F->>R: attachAmenities(place_id, amenity_ids)
+R->>DB: Insert place_amenities
+R-->>F: PlaceEntity
+F-->>API: PlaceDto
+API-->>U: 201 Created + payload
 
-    User->>API: POST /places (Create Place)
-    activate API
-    Note right of API: Validate & Forward Request
+alt Owner not found / not allowed
+  F-->>API: NotFound/Forbidden
+  API-->>U: 404/403
+end
 
-    API->>BusinessLogic: Validate & Create Place
-    activate BusinessLogic
-    Note right of BusinessLogic: Prepare Place Data
-
-    BusinessLogic->>Database: Insert Place Record
-    activate Database
-    Note right of Database: Store Place Info
-
-    Database-->>BusinessLogic: Success/Failure
-    deactivate Database
-
-    Note left of BusinessLogic: Return Status
-    BusinessLogic-->>API: Place Created Response
-    deactivate BusinessLogic
-
-    Note left of API: Send Confirmation
-    API-->>User: Place Creation Confirmation
-    deactivate API
+alt Invalid payload
+  API-->>U: 400 Bad Request
+end
 ```
 Purpose:
 To allow a registered user to create a new place listing with details like name, location and description.
