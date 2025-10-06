@@ -10,10 +10,10 @@ and the interactions within the system components
 
 ##  📝 Problem Description
 **The application will allow users to**:
-👤 User Management: register, update their profiles, and check admin status of users
-🏡 Place Management: create, update, delete listings
-✍🏻 Review Management: write reviews with ratings and comments on places visited
-🛜 Amenity Management: create, update, delete amenities
+- 👤 User Management: register, update their profiles, and check admin status of users
+- 🏡 Place Management: create, update, delete listings
+- ✍🏻 Review Management: write reviews with ratings and comments on places visited
+- 🛜 Amenity Management: create, update, delete amenities
 
 Each object includes a unique `ID` and automatically records creation and modification timestamps to support auditability
 
