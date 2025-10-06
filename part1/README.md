@@ -1,8 +1,10 @@
 # HBnB - UML
 
 ## 📌 Project Overview
-**HBnB - UML** is the initial phase of the **HBnB Evolution** project. 
+**HBnB - UML** is the initial phase of the **HBnB Evolution** project
+
 It focuses on creating comprehensive technical documentation that will serve as the foundation for the development of this application
+
 It includes high-level package diagram, detailed class diagram and sequence diagram that illustrate the overall architecture, the detailed design of the business logic,
 and the interactions within the system components
 
